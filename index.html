@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balon Savunma Oyunu</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #game-area {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .player {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        .balloon {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: red;
+        }
+        .bullet {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+        }
+        #scoreboard {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            font-size: 18px;
+        }
+        #selection-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        #selection-modal button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-area">
+        <div id="player" class="player"></div>
+    </div>
+    <div id="scoreboard">
+        <p>Puan: <span id="score">0</span></p>
+        <p>Can: <span id="lives">5</span></p>
+    </div>
+    <!-- Seçim modalı -->
+    <div id="selection-modal">
+        <div>
+            <h2>Hangi kontrol yöntemini kullanmak istersiniz?</h2>
+            <button id="mouse-control">Mouse</button>
+            <button id="touch-control">Dokunmatik</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
