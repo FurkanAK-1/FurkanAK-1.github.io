@@ -2,9 +2,6 @@ const gameArea = document.getElementById("game-area");
 const player = document.getElementById("player");
 const scoreDisplay = document.getElementById("score");
 const livesDisplay = document.getElementById("lives");
-const modal = document.getElementById("selection-modal");
-const mouseButton = document.getElementById("mouse-control");
-const touchButton = document.getElementById("touch-control");
 
 let score = 0;
 let lives = 5;
@@ -28,54 +25,19 @@ weaponTip.style.borderRadius = "50%";
 gameArea.appendChild(weaponTip);
 
 let mouseAngle = 0;
-
-// Kullanıcı dokunmatik kontrolü seçerse
-touchButton.addEventListener("click", () => {
-    modal.style.display = "none"; // Modalı gizle
-    enableTouchControls(); // Dokunmatik kontrolleri etkinleştir
-});
-
-// Kullanıcı mouse kontrolünü seçerse
-mouseButton.addEventListener("click", () => {
-    modal.style.display = "none"; // Modalı gizle
-    enableMouseControls(); // Mouse kontrolleri varsayılan olarak çalışıyor
-});
-
-// Mouse kontrolü etkinleştirme
-function enableMouseControls() {
-    gameArea.addEventListener("mousemove", handleMove);
-    gameArea.addEventListener("click", handleFire);
-}
-
-// Dokunmatik kontrolleri etkinleştirme
-function enableTouchControls() {
-    gameArea.addEventListener("touchmove", handleMove);
-    gameArea.addEventListener("touchstart", handleFire);
-}
-
-function handleMove(e) {
-    let clientX, clientY;
-
-    if (e.touches) {
-        clientX = e.touches[0].clientX; // Dokunma için
-        clientY = e.touches[0].clientY;
-    } else {
-        clientX = e.clientX; // Mouse için
-        clientY = e.clientY;
-    }
-
+gameArea.addEventListener("mousemove", (e) => {
     const rect = gameArea.getBoundingClientRect();
-    const dx = clientX - (rect.left + playerX);
-    const dy = clientY - (rect.top + playerY);
+    const dx = e.clientX - (rect.left + playerX);
+    const dy = e.clientY - (rect.top + playerY);
     mouseAngle = Math.atan2(dy, dx);
 
     const tipX = playerX + Math.cos(mouseAngle) * 40;
     const tipY = playerY + Math.sin(mouseAngle) * 40;
     weaponTip.style.left = `${tipX - weaponTip.offsetWidth / 2}px`;
     weaponTip.style.top = `${tipY - weaponTip.offsetHeight / 2}px`;
-}
+});
 
-function handleFire(e) {
+gameArea.addEventListener("click", () => {
     const bullet = {
         x: playerX + Math.cos(mouseAngle) * 40,
         y: playerY + Math.sin(mouseAngle) * 40,
@@ -89,7 +51,7 @@ function handleFire(e) {
 
     gameArea.appendChild(bullet.element);
     bullets.push(bullet);
-}
+});
 
 function spawnBalloon() {
     const direction = ["top", "bottom", "left", "right"][Math.floor(Math.random() * 4)];
