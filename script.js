@@ -7,7 +7,7 @@ let score = 0;
 let lives = 5;
 let balloons = [];
 let bullets = [];
-let speedMultiplier = 1;
+let speedMultiplier = 0.30;
 const baseSpeed = 2;
 
 const playerX = gameArea.offsetWidth / 2;
@@ -54,43 +54,60 @@ gameArea.addEventListener("click", () => {
 });
 
 function spawnBalloon() {
-    const direction = ["top", "bottom", "left", "right"][Math.floor(Math.random() * 4)];
-    const balloon = {
-        element: document.createElement("div"),
-        x: 0,
-        y: 0,
-        speedX: 0,
-        speedY: 0,
-    };
+   
+    let balloonCount = 1; 
 
-    balloon.element.className = "balloon";
-
-    if (direction === "top") {
-        balloon.x = Math.random() * gameArea.offsetWidth;
-        balloon.y = 0;
-    } else if (direction === "bottom") {
-        balloon.x = Math.random() * gameArea.offsetWidth;
-        balloon.y = gameArea.offsetHeight;
-    } else if (direction === "left") {
-        balloon.x = 0;
-        balloon.y = Math.random() * gameArea.offsetHeight;
-    } else if (direction === "right") {
-        balloon.x = gameArea.offsetWidth;
-        balloon.y = Math.random() * gameArea.offsetHeight;
+    if (score >= 25) {
+        balloonCount = 2; 
+    }
+    if (score >= 50) {
+        balloonCount = 3; 
     }
 
-    const dx = playerX - balloon.x;
-    const dy = playerY - balloon.y;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    balloon.speedX = (dx / distance) * baseSpeed * speedMultiplier;
-    balloon.speedY = (dy / distance) * baseSpeed * speedMultiplier;
+    
+    for (let i = 0; i < balloonCount; i++) {
+        const direction = ["top", "bottom", "left", "right"][Math.floor(Math.random() * 4)];
+        const balloon = {
+            element: document.createElement("div"),
+            x: 0,
+            y: 0,
+            speedX: 0,
+            speedY: 0,
+        };
 
-    balloon.element.style.left = `${balloon.x}px`;
-    balloon.element.style.top = `${balloon.y}px`;
+        balloon.element.className = "balloon";
 
-    gameArea.appendChild(balloon.element);
-    balloons.push(balloon);
+        
+        if (direction === "top") {
+            balloon.x = Math.random() * gameArea.offsetWidth;
+            balloon.y = 0;
+        } else if (direction === "bottom") {
+            balloon.x = Math.random() * gameArea.offsetWidth;
+            balloon.y = gameArea.offsetHeight;
+        } else if (direction === "left") {
+            balloon.x = 0;
+            balloon.y = Math.random() * gameArea.offsetHeight;
+        } else if (direction === "right") {
+            balloon.x = gameArea.offsetWidth;
+            balloon.y = Math.random() * gameArea.offsetHeight;
+        }
+
+        
+        const dx = playerX - balloon.x;
+        const dy = playerY - balloon.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        balloon.speedX = (dx / distance) * baseSpeed * speedMultiplier;
+        balloon.speedY = (dy / distance) * baseSpeed * speedMultiplier;
+
+       
+        balloon.element.style.left = `${balloon.x}px`;
+        balloon.element.style.top = `${balloon.y}px`;
+
+        gameArea.appendChild(balloon.element);
+        balloons.push(balloon);
+    }
 }
+
 
 function moveObjects() {
     for (let i = 0; i < bullets.length; i++) {
@@ -142,7 +159,7 @@ function moveObjects() {
                 scoreDisplay.textContent = score;
 
                 if (score % 10 === 0) {
-                    speedMultiplier += 0.2;
+                    speedMultiplier += 0.10;
                 }
 
                 i--;
@@ -163,6 +180,6 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-setInterval(spawnBalloon, 1000);
+setInterval(spawnBalloon, 2000);
 
 gameLoop();
